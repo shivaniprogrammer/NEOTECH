@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const passport = require('../config/passport');
 const { register, login, getProfile } = require('../controllers/authController');
-const { protect } = require('../middleware/authMiddleware');
+const  protect = require('../middleware/authMiddleware');
 
 // Existing routes
 router.post('/register', register);
