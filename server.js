@@ -7,6 +7,16 @@ const path = require('path');
 dotenv.config();
 
 const app = express();
+const session = require('express-session');
+const passport = require('./config/passport');
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware
 app.use(cors());
