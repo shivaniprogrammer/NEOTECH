@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     default: false
   },
   googleId: { type: String },
-  password: { type: String, minlength: 6 }, // remove required:true
+password: { type: String, minlength: 6 },// remove required:true
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

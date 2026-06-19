@@ -16,8 +16,14 @@ router.get('/google',
 );
 
 router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: `${process.env.FRONTEND_URL}/login.html?error=google_failed` }),
+  passport.authenticate('google', { 
+    failureRedirect: `${process.env.FRONTEND_URL}/login.html?error=google_failed`,
+    session: false
+  }),
   (req, res) => {
+    if (!req.user) {
+      return res.redirect(`${process.env.FRONTEND_URL}/login.html?error=google_failed`);
+    }
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
     const userData = {
       _id: req.user._id,
@@ -28,5 +34,4 @@ router.get('/google/callback',
     res.redirect(`${process.env.FRONTEND_URL}/login.html?token=${token}&user=${encodeURIComponent(JSON.stringify(userData))}`);
   }
 );
-
 module.exports = router;
