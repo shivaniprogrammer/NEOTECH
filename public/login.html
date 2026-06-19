@@ -801,7 +801,7 @@
       const password = document.getElementById('login-password').value;
       
       try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch('http://localhttps://neotech-gg5m.onrender.comhost:5000/api/auth/login', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ email, password })
@@ -834,7 +834,7 @@ localStorage.setItem('token', data.token);
       }
       
       try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch('http://locahttps://neotech-gg5m.onrender.comlhost:5000/api/auth/register', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ name: `${firstName} ${lastName}`, email, password })

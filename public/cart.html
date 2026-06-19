@@ -153,6 +153,7 @@
     </div>
   </footer>
 
+
 <script>
     const storedUser = JSON.parse(localStorage.getItem('user')) || null;
   const storedToken = localStorage.getItem('token') || localStorage.getItem('authToken');
@@ -266,7 +267,7 @@
     // ============================================
     async function loadSavedAddress() {
       try {
-        const res = await fetch('http://localhost:5000/api/address');
+        const res = await fetch('http://locahttps://neotech-gg5m.onrender.comlhost:5000/api/address');
         const address = await res.json();
         if (address) {
           showSavedAddress(address);
@@ -305,7 +306,7 @@
       }
 
       try {
-        const res = await fetch('http://localhost:5000/api/address', {
+        const res = await fetch('http://localhoshttps://neotech-gg5m.onrender.comt:5000/api/address', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ fullName, phone, street, city, state, pincode })

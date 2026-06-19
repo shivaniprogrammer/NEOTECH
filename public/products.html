@@ -613,7 +613,7 @@ let priceMaxVal = 0;
     /* LOAD PRODUCTS */
     async function loadProducts() {
       try {
-        const res = await fetch('http://localhost:5000/api/products');
+        const res = await fetch('http://localhosthttps://neotech-gg5m.onrender.com:5000/api/products');
         allProducts = await res.json();
         displayProducts(allProducts);
       } catch {
@@ -794,7 +794,7 @@ if (savedTab) {
 
 async function loadProducts() {
   try {
-    const res = await fetch('http://localhost:5000/api/products');
+    const res = await fetch('http://lhttps://neotech-gg5m.onrender.comocalhost:5000/api/products');
     allProducts = await res.json();
     updatePriceSliderBounds();
     displayProducts(allProducts);
