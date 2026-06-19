@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEOTECH | Premium Gadgets</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero-bg {
+  transition: background-image 1s ease-in-out;
+}
+.hero-bg-slider {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+    /* ============================================
+       DAILY DEALS CAROUSEL - Flipkart Style
+       ============================================ */
+    
+  .deals-section {
+  padding: 4rem 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow: visible;
+  position: relative;
+}
+
+.deals-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.deals-title-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.deals-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+}
+
+.deals-timer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--gray-500);
+}
+
+.timer-box {
+  background: var(--primary);
+  color: var(--white);
+  padding: 0.3rem 0.6rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.view-all-btn {
+  padding: 0.7rem 1.5rem;
+  background: var(--primary);
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: var(--transition);
+  border: 2px solid var(--primary);
+}
+
+.view-all-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Carousel */
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 45px 12px 45px; /* ← add padding on both sides for arrows */
+  width: 100%;
+}
+
+.carousel-track {
+   display: flex;
+  flex-wrap: nowrap;        /* ← add this */
+  gap: 1.5rem;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* DEAL CARD — horizontal rectangle */
+.deal-card {
+  /* fixed width so text never gets squished */
+  flex: 0 0 340px;
+  width: 340px;
+  min-width: 340px; 
+  background: white;
+  border-radius: 20px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  transition: transform 0.3s ease;
+  isolation: isolate;
+}
+
+.deal-card::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from var(--angle),
+    #ffd700, #fff7aa, #ffd700, #b8860b, #ffd700
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+  animation: none;
+}
+
+.deal-card::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 18px;
+  background: white;
+  z-index: 1;
+}
+
+.deal-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.deal-card:hover::before {
+  opacity: 1;
+  animation: spinBorder 2s linear infinite;
+}
+
+.deal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 18px 4px rgba(255, 215, 0, 0.35);
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spinBorder {
+  from { --angle: 0deg; }
+  to   { --angle: 360deg; }
+}
+
+/* IMAGE */
+.deal-image {
+  width: 160px;
+  min-width: 160px;
+  height: 200px;
+  object-fit: contain;
+  display: block;
+  border-radius: 18px 0 0 18px;
+  background: white;
+  padding: 0.5rem;
+}
+
+/* BADGE */
+.deal-badge {
+  position: absolute;
+  top: 12px;
+   height: 180px;  
+  left: 0;
+  background: var(--accent);
+  color: var(--white);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  letter-spacing: 0.5px;
+  z-index: 3;
+  border-radius: 0 4px 4px 0;
+}
+
+/* TEXT BODY */
+.deal-body {
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;          /* prevents text overflow */
+}
+
+.deal-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  line-height: 1.35;
+  white-space: normal;   /* allow wrapping */
+  overflow: visible;
+  display: block;
+  padding: 0;
+}
+
+.deal-price-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.deal-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.deal-original {
+  font-size: 0.82rem;
+  color: var(--gray-400);
+  text-decoration: line-through;
+}
+
+.deal-discount {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.deal-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  padding: 0;
+}
+
+.stars { color: #fbbc04; font-weight: 700; }
+
+/* Arrows */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: var(--primary);
+  z-index: 10;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+  border-radius: 50%;
+}
+
+.carousel-arrow:hover {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+
+.carousel-arrow.next {
+  position: absolute;
+  right: 0;
+}
+
+.carousel-arrow.prev {
+  position: absolute;
+  left: 0;
+}
+
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 50px; /* ← space for arrows */
+  width: 100%;
+}
+.carousel-arrow.hidden { opacity: 0; pointer-events: none; }
+
+/* Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gray-300);
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  border-radius: 4px;
+}
+
+.carousel-dot.active {
+  background: var(--accent);
+  width: 24px;
+}
+
+@media (max-width: 768px) {
+  .deal-card { flex: 0 0 280px; width: 280px; }
+  .deal-image { width: 120px; min-width: 120px; height: 120px; }
+}
+    /* Empty state */
+    .deals-empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--gray-400);
+      font-size: 1rem;
+      border: 2px dashed var(--gray-300);
+      margin: 1rem 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .deal-card {
+        min-width: calc(25% - 1.125rem);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .deal-card {
+        min-width: calc(33.333% - 1rem);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .deal-card {
+        min-width: calc(50% - 0.75rem);
+      }
+      
+      .deals-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">NEOTECH</a>
+    
+    <button class="mobile-menu-btn">☰</button>
+    
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="orders.html">My Orders</a></li>
+
+    </ul>
+    
+    <div class="nav-actions">
+      <a href="login.html" class="nav-btn btn-primary auth-link-item">SIGN IN</a>
+      
+      <div class="user-menu" style="display: none;">
+        <span class="user-greeting">Hi, <span class="user-name"></span></span>
+        <a href="#" class="logout-btn">Logout</a>
+      </div>
+      
+      <a href="cart.html" class="cart-icon">
+        🛒
+        <span class="cart-count" style="display: none;">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION - Tech/Gadget Background -->
+  <section class="hero">
+<div class="hero-bg-slider" id="heroSlider">
+  <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=80')"></div>
+  <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=1920&q=80')"></div>
+  <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=1920&q=80')"></div>
+  <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1920&q=80')"></div>
+  <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1920&q=80')"></div>
+</div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Latest Tech 2026</div>
+      <h1 class="hero-title">Next-Gen Gadgets<br>For Modern Life</h1>
+      <p class="hero-subtitle">Discover cutting-edge electronics, smart devices, and premium accessories crafted for tech enthusiasts.</p>
+      <div class="hero-buttons">
+        <a href="products.html" class="nav-btn btn-accent btn-large">SHOP NOW</a>
+        <a href="#deals" class="nav-btn btn-outline btn-large">VIEW DEALS</a>
+      </div>
+    </div>
+  </section>
+  <!-- CATEGORY CARDS -->
+<section style="padding: 2rem 5%; max-width: 1400px; margin: 0 auto;">
+  <div style="text-align:center; margin-bottom: 2rem;">
+    <div style="font-size:0.75rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem;">BROWSE BY CATEGORY</div>
+    <h2 style="font-size:2rem; font-weight:700; color:var(--primary);">Shop By Category</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:1rem;">
+
+    <a href="products.html" onclick="sessionStorage.setItem('activeTab','Phones')" style="text-decoration:none; position:relative; border-radius:12px; overflow:hidden; cursor:pointer; height:260px; display:block;">
+      <img src="images/samsung-galaxy-s26-ultra-1.jpg" style="width:100%; height:100%; object-fit:cover;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(26,26,46,0.85) 0%, transparent 60%);"></div>
+      <div style="position:absolute; bottom:1rem; left:1rem;">
+        <div style="color:white; font-weight:700; font-size:1rem;">Phones</div>
+        <div style="color:rgba(255,255,255,0.7); font-size:0.75rem;">Samsung • Apple • OPPO</div>
+      </div>
+    </a>
+
+    <a href="products.html" onclick="sessionStorage.setItem('activeTab','Laptops')" style="text-decoration:none; position:relative; border-radius:12px; overflow:hidden; cursor:pointer; height:260px; display:block;">
+      <img src="images/lap1.jpg" style="width:100%; height:100%; object-fit:cover;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(26,26,46,0.85) 0%, transparent 60%);"></div>
+      <div style="position:absolute; bottom:1rem; left:1rem;">
+        <div style="color:white; font-weight:700; font-size:1rem;">Laptops</div>
+        <div style="color:rgba(255,255,255,0.7); font-size:0.75rem;">HP • Dell • Lenovo • Apple</div>
+      </div>
+    </a>
+
+    <a href="products.html" onclick="sessionStorage.setItem('activeTab','Wearables')" style="text-decoration:none; position:relative; border-radius:12px; overflow:hidden; cursor:pointer; height:260px; display:block;">
+      <img src="images/in-galaxy-watch-ultra-2025-l705-sm-l705fza1ins-thumb-547659854.png" style="width:100%; height:100%; object-fit:cover; background:#1a1a2e;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(26,26,46,0.85) 0%, transparent 60%);"></div>
+      <div style="position:absolute; bottom:1rem; left:1rem;">
+        <div style="color:white; font-weight:700; font-size:1rem;">Smartwatches</div>
+        <div style="color:rgba(255,255,255,0.7); font-size:0.75rem;">Galaxy • boAt</div>
+      </div>
+    </a>
+
+    <a href="products.html" onclick="sessionStorage.setItem('activeTab','Monitors')" style="text-decoration:none; position:relative; border-radius:12px; overflow:hidden; cursor:pointer; height:260px; display:block;">
+      <img src="images/p2725qe_main_img.png" style="width:100%; height:100%; object-fit:cover; background:#f1f3f4;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(26,26,46,0.85) 0%, transparent 60%);"></div>
+      <div style="position:absolute; bottom:1rem; left:1rem;">
+        <div style="color:white; font-weight:700; font-size:1rem;">Monitors</div>
+        <div style="color:rgba(255,255,255,0.7); font-size:0.75rem;">Dell • Apple • Alienware</div>
+      </div>
+    </a>
+
+    <a href="products.html" onclick="sessionStorage.setItem('activeTab','Audio')" style="text-decoration:none; position:relative; border-radius:12px; overflow:hidden; cursor:pointer; height:260px; display:block;">
+      <img src="images/ad181_pro_ergonomic_design.142_1.jpg" style="width:100%; height:100%; object-fit:cover;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(26,26,46,0.85) 0%, transparent 60%);"></div>
+      <div style="position:absolute; bottom:1rem; left:1rem;">
+        <div style="color:white; font-weight:700; font-size:1rem;">Airpods</div>
+        <div style="color:rgba(255,255,255,0.7); font-size:0.75rem;">boAt • Apple</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+ 
+ 
+
+  <!-- DAILY DEALS CAROUSEL - EMPTY (Add your products here) -->
+  <section class="deals-section" id="deals">
+    <div class="deals-header">
+      <div class="deals-title-group">
+        <h2 class="deals-title">🔥 Daily Deals</h2>
+        <div class="deals-timer">
+          <span>Ends in:</span>
+          <span class="timer-box" id="hours">04</span>
+          <span>:</span>
+          <span class="timer-box" id="minutes">32</span>
+          <span>:</span>
+          <span class="timer-box" id="seconds">15</span>
+        </div>
+      </div>
+      <a href="products.html" class="view-all-btn">VIEW ALL</a>
+    </div>
+
+ <button class="carousel-arrow prev" id="prevBtn">‹</button>
+    <button class="carousel-arrow next" id="nextBtn">›</button>
+
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carouselTrack">
+        
+        <!-- ============================================
+             ADD YOUR PRODUCTS HERE - Copy this block for each product
+             ============================================ -->
+<div class="deal-card" onclick="window.location.href='products.html'">
+  <img src="images/ad181_pro_ergonomic_design.142_1.jpg" alt="boAt Airpods" class="deal-image">
+  <div class="deal-body">
+    <h3 class="deal-name">boAt Airdopes 181 Pro</h3>
+    <div class="deal-price-row">
+      <span class="deal-price">₹1,299</span>
+      <span class="deal-original">₹2,999</span>
+      <span class="deal-discount">57% off</span>
+    </div>
+    <div class="deal-rating">
+      <span class="stars">★★★★☆</span>
+      <span>(4,231)</span>
+    </div>
+  </div>
+</div>
+
+<div class="deal-card" onclick="window.location.href='products.html'">
+  <img src="images/27324076709_GreyLTEnew_202505051226051753702500232.png" alt="Tablet" class="deal-image">
+  <div class="deal-body">
+    <h3 class="deal-name">Samsung Galaxy Tab A9</h3>
+    <div class="deal-price-row">
+      <span class="deal-price">₹14,999</span>
+      <span class="deal-original">₹18,999</span>
+      <span class="deal-discount">21% off</span>
+    </div>
+    <div class="deal-rating">
+      <span class="stars">★★★★☆</span>
+      <span>(1,892)</span>
+    </div>
+  </div>
+</div>
+
+<div class="deal-card" onclick="window.location.href='products.html'">
+  <img src="images/in-galaxy-watch-ultra-2025-l705-sm-l705fza1ins-thumb-547659854.png" alt="Galaxy Watch Ultra" class="deal-image">
+  <div class="deal-body">
+    <h3 class="deal-name">Galaxy Watch Ultra 2025</h3>
+    <div class="deal-price-row">
+      <span class="deal-price">₹59,999</span>
+      <span class="deal-original">₹69,999</span>
+      <span class="deal-discount">14% off</span>
+    </div>
+    <div class="deal-rating">
+      <span class="stars">★★★★★</span>
+      <span>(892)</span>
+    </div>
+  </div>
+</div>
+             
+        <div class="deal-card" onclick="window.location.href='products.html'">
+  <img src="images/(4)oppo-k14x-1.jpg" alt="OPPO K14X" class="deal-image">
+  <div class="deal-body">
+    <h3 class="deal-name">OPPO K14X</h3>
+    <div class="deal-price-row">
+      <span class="deal-price">₹16,999</span>
+      <span class="deal-original">₹19,999</span>
+      <span class="deal-discount">15% off</span>
+    </div>
+    <div class="deal-rating">
+      <span class="stars">★★★★☆</span>
+      <span>(1,832)</span>
+    </div>
+  </div>
+</div>
+
+<div class="deal-card" onclick="window.location.href='products.html'">
+  <img src="images/(5)oppo-reno8-t-4g-1.jpg" alt="OPPO Reno8 T" class="deal-image">
+  <div class="deal-body">
+    <h3 class="deal-name">OPPO Reno8 T 4G</h3>
+    <div class="deal-price-row">
+      <span class="deal-price">₹23,999</span>
+      <span class="deal-original">₹27,999</span>
+      <span class="deal-discount">14% off</span>
+    </div>
+    <div class="deal-rating">
+      <span class="stars">★★★★★</span>
+      <span>(2,541)</span>
+    </div>
+  </div>
+</div>
+
+<div class="deal-card" onclick="window.location.href='products.html'">
+  <img src="images/(6)oppo-a36-1.jpg" alt="OPPO A36" class="deal-image">
+  <div class="deal-body">
+    <h3 class="deal-name">OPPO A36</h3>
+    <div class="deal-price-row">
+      <span class="deal-price">₹13,999</span>
+      <span class="deal-original">₹16,999</span>
+      <span class="deal-discount">18% off</span>
+    </div>
+    <div class="deal-rating">
+      <span class="stars">★★★★☆</span>
+      <span>(987)</span>
+    </div>
+  </div>
+</div>
+        
+<div class="deal-card" onclick="window.location.href='product.html?id=1'">
+  
+  <img src="images/alexunder-hess-bWZAPKm0zZE-unsplash.jpg" alt="Product Name" class="deal-image">
+  <div class="deal-body">
+   <b><h3 class="deal-name">EchoTune X1 </b></h3>
+    <div class="deal-price-row">
+      <span class="deal-price">₹999</span>
+      <span class="deal-original">₹1249</span>
+      <span class="deal-discount">20% off</span>
+    </div>
+    <div class="deal-rating">
+      <span class="stars">★★★★☆</span>
+      <span>(1,245)</span>
+    </div>
+  </div>
+</div>
+<div class="deal-card" onclick="window.location.href='product.html?id=2'">
+
+
+  <img src="images/insung-yoon-mru38VH7tII-unsplash.jpg" 
+     alt="Premium Speaker" 
+     class="deal-image">
+
+  <div class="deal-body">
+  <b><h3 class="deal-name">SonicPulse Mini Speaker</b></h3>
+
+    <div class="deal-price-row">
+      <span class="deal-price">₹2,499</span>
+      <span class="deal-original">₹3,849</span>
+      <span class="deal-discount">35% off</span>
+    </div>
+
+    <div class="deal-rating">
+      <span class="stars">★★★★★</span>
+      <span>(2,384)</span>
+    </div>
+  </div>
+</div>
+<div class="deal-card" onclick="window.location.href='product.html?id=3'">
+  
+
+  
+
+
+        <!-- Empty state - remove this when you add products -->
+      
+
+      </div>
+
+
+    <div class="carousel-dots" id="carouselDots"></div>
+  </section>
+  <!-- TRENDING GADGETS SECTION -->
+<section class="trending-section">
+  <div class="trending-box">
+    <div class="trending-header">
+      <h2 class="trending-title">Trending Phones</h2>
+      <a href="products.html" class="trending-arrow">→</a>
+    </div>
+    <div class="trending-grid">
+ 
+      <div class="trending-card" onclick="openModal('sony')">
+        <div class="trending-img-wrap">
+          <img src="images/A(1)sony-xperia-1-vii-1.jpg" alt="Sony Xperia 1 VII" />
+        </div>
+        <div class="trending-label">Sony Xperia 1 VII</div>
+        <div class="trending-price-row">
+          <span class="t-new-price">₹89,999</span>
+          <span class="t-old-price">₹1,09,999</span>
+        </div>
+        <div class="trending-offer">18% Off</div>
+      </div>
+ 
+      <div class="trending-card" onclick="openModal('xiaomi')">
+        <div class="trending-img-wrap">
+          <img src="images/A(4)xiaomi-17-max-1.jpg" alt="Xiaomi 17 Max" />
+        </div>
+        <div class="trending-label">Xiaomi 17 Max</div>
+        <div class="trending-price-row">
+          <span class="t-new-price">₹74,999</span>
+          <span class="t-old-price">₹89,999</span>
+        </div>
+        <div class="trending-offer">17% Off</div>
+      </div>
+ 
+      <div class="trending-card" onclick="openModal('pixel')">
+        <div class="trending-img-wrap">
+          <img src="images/A(2)google-pixel-9a-1.jpg" alt="Google Pixel 9a" />
+        </div>
+        <div class="trending-label">Google Pixel 9a</div>
+        <div class="trending-price-row">
+          <span class="t-new-price">₹49,999</span>
+          <span class="t-old-price">₹59,999</span>
+        </div>
+        <div class="trending-offer">17% Off</div>
+      </div>
+ 
+      <div class="trending-card" onclick="openModal('oneplus')">
+        <div class="trending-img-wrap">
+          <img src="images/A(3)oneplus-ace-6-ultra-1.jpg" alt="OnePlus Ace 6 Ultra" />
+        </div>
+        <div class="trending-label">OnePlus Ace 6 Ultra</div>
+        <div class="trending-price-row">
+          <span class="t-new-price">₹64,999</span>
+          <span class="t-old-price">₹79,999</span>
+        </div>
+        <div class="trending-offer">19% Off</div>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+<!-- TRENDING LAPTOPS — updated onclick -->
+<section class="trending-section">
+  <div class="trending-box">
+    <div class="trending-header">
+      <h2 class="trending-title">Trending Laptops</h2>
+      <a href="products.html" class="trending-arrow">→</a>
+    </div>
+    <div class="trending-grid">
+
+<div class="trending-card" onclick="openModal('lenovo_yoga')">
+  <div class="trending-img-wrap">
+    <img src="images/A(3)D9CU8PT-1_T1776229880.avif" alt="Lenovo Yoga Pro 7i" />
+  </div>
+  <div class="trending-label">Lenovo Yoga Pro 7i Gen 10</div>
+  <div class="trending-price-row">
+    <span class="t-new-price">₹1,06,600</span>
+    <span class="t-old-price">₹1,24,999</span>
+  </div>
+  <div class="trending-offer">15% Off</div>
+</div>
+
+      <div class="trending-card" onclick="openModal('hp_spectre')">
+        <div class="trending-img-wrap">
+         <img src="images/1527733756066_yoga7i11ss_202511110512331776362914579.avif"
+     alt="HP Spectre x360" /></div> 
+        <div class="trending-label">HP Spectre x360 14 Touch</div>
+        <div class="trending-price-row">
+          <span class="t-new-price">₹1,59,999</span>
+          <span class="t-old-price">₹1,84,999</span>
+        </div>
+        <div class="trending-offer">14% Off</div>
+      </div>
+
+      <div class="trending-card" onclick="openModal('macbook_pro')">
+        <div class="trending-img-wrap">
+          <img src="images/(1)(3)mbp_14_16_028335cc2_2x.jpg" alt="MacBook Pro M5" />
+        </div>
+        <div class="trending-label">Apple MacBook Pro M5</div>
+        <div class="trending-price-row">
+          <span class="t-new-price">₹1,69,900</span>
+          <span class="t-old-price">₹1,99,900</span>
+        </div>
+        <div class="trending-offer">15% Off</div>
+      </div>
+
+      <div class="trending-card" onclick="openModal('thinkpad')">
+        <div class="trending-img-wrap">
+          <img src="images/13thinkpad-x1-carbon-gen-13-aura-edition-14-intel-arl.png" alt="ThinkPad X1 Carbon" />
+        </div>
+        <div class="trending-label">Lenovo ThinkPad X1 Carbon Gen 13</div>
+        <div class="trending-price-row">
+          <span class="t-new-price">₹1,89,990</span>
+          <span class="t-old-price">₹2,19,999</span>
+        </div>
+        <div class="trending-offer">14% Off</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+ 
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="section" id="featured">
+    <div class="section-header">
+      <div class="section-tag">Curated Tech</div>
+      <h2 class="section-title">Featured Gadgets</h2>
+      <p class="section-desc">Handpicked electronics from our latest collection, chosen for innovation and performance.</p>
+    </div>
+    <div class="products-grid">
+      <!-- Products loaded dynamically from API -->
+    </div>
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="products.html" class="nav-btn btn-outline btn-large">VIEW ALL PRODUCTS</a>
+    </div>
+  </section>
+
+ <footer class="footer">
+  <div style="background: var(--primary); padding: 4rem 5% 0;">
+
+    <!-- TOP STRIP -->
+    <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:2.5rem; border-bottom:1px solid rgba(255,255,255,0.1); flex-wrap:wrap; gap:1rem;">
+      <div>
+        <h2 style="color:white; font-size:1.8rem; font-weight:800; letter-spacing:-0.5px;">TECHSTORE</h2>
+        <p style="color:rgba(255,255,255,0.5); font-size:0.85rem; margin-top:0.3rem;">India's Premium Tech Destination</p>
+      </div>
+      <div style="display:flex; gap:1rem;">
+        <a href="#" style="width:38px; height:38px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; color:white; text-decoration:none; font-size:0.9rem; transition:0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='transparent'">f</a>
+        <a href="#" style="width:38px; height:38px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; color:white; text-decoration:none; font-size:0.9rem; transition:0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='transparent'">in</a>
+        <a href="#" style="width:38px; height:38px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; color:white; text-decoration:none; font-size:0.9rem; transition:0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='transparent'">tw</a>
+        <a href="#" style="width:38px; height:38px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; color:white; text-decoration:none; font-size:0.9rem; transition:0.3s;" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='transparent'">yt</a>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div style="display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:3rem; padding:3rem 0;">
+
+      <div>
+        <p style="color:rgba(255,255,255,0.55); font-size:0.9rem; line-height:1.8; margin-bottom:1.5rem;">Premium destination for cutting-edge electronics and smart gadgets. We deliver innovation to your doorstep across India.</p>
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">📍 Chennai, Tamil Nadu, India</span>
+          <span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">📞 +91 98765 43210</span>
+          <span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">✉ support@techstore.in</span>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="color:white; font-size:0.8rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:1.5rem;">Shop</h4>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:0.8rem;">
+          <li><a href="products.html" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">All Products</a></li>
+          <li><a href="products.html" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Phones</a></li>
+          <li><a href="products.html" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Laptops</a></li>
+          <li><a href="products.html" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Smartwatches</a></li>
+          <li><a href="products.html" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Monitors</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="color:white; font-size:0.8rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:1.5rem;">Support</h4>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:0.8rem;">
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Contact Us</a></li>
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Shipping Info</a></li>
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Returns & Refunds</a></li>
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Track Order</a></li>
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="color:white; font-size:0.8rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:1.5rem;">Company</h4>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:0.8rem;">
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">About Us</a></li>
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Careers</a></li>
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Privacy Policy</a></li>
+          <li><a href="#" style="color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TRUST BADGES -->
+    <div style="display:flex; justify-content:center; gap:3rem; padding:1.5rem 0; border-top:1px solid rgba(255,255,255,0.1); border-bottom:1px solid rgba(255,255,255,0.1); flex-wrap:wrap;">
+      <div style="text-align:center; color:rgba(255,255,255,0.6);">
+        <div style="font-size:1.4rem; margin-bottom:0.3rem;">🚚</div>
+        <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.5px;">FREE DELIVERY</div>
+        <div style="font-size:0.7rem; opacity:0.6;">On orders above ₹10,000</div>
+      </div>
+      <div style="text-align:center; color:rgba(255,255,255,0.6);">
+        <div style="font-size:1.4rem; margin-bottom:0.3rem;">🔄</div>
+        <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.5px;">EASY RETURNS</div>
+        <div style="font-size:0.7rem; opacity:0.6;">7-day return policy</div>
+      </div>
+      <div style="text-align:center; color:rgba(255,255,255,0.6);">
+        <div style="font-size:1.4rem; margin-bottom:0.3rem;">🔒</div>
+        <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.5px;">SECURE PAYMENTS</div>
+        <div style="font-size:0.7rem; opacity:0.6;">100% safe & secure</div>
+      </div>
+      <div style="text-align:center; color:rgba(255,255,255,0.6);">
+        <div style="font-size:1.4rem; margin-bottom:0.3rem;">🎧</div>
+        <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.5px;">24/7 SUPPORT</div>
+        <div style="font-size:0.7rem; opacity:0.6;">Always here to help</div>
+      </div>
+      <div style="text-align:center; color:rgba(255,255,255,0.6);">
+        <div style="font-size:1.4rem; margin-bottom:0.3rem;">✅</div>
+        <div style="font-size:0.75rem; font-weight:600; letter-spacing:0.5px;">100% GENUINE</div>
+        <div style="font-size:0.7rem; opacity:0.6;">Authorized products only</div>
+      </div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:1.5rem 0; flex-wrap:wrap; gap:0.5rem;">
+      <p style="color:rgba(255,255,255,0.35); font-size:0.82rem;">© 2026 TECHSTORE. All rights reserved. Made with ❤️ in India</p>
+      <div style="display:flex; gap:1.5rem;">
+        <a href="#" style="color:rgba(255,255,255,0.35); text-decoration:none; font-size:0.78rem;">Privacy</a>
+        <a href="#" style="color:rgba(255,255,255,0.35); text-decoration:none; font-size:0.78rem;">Terms</a>
+        <a href="#" style="color:rgba(255,255,255,0.35); text-decoration:none; font-size:0.78rem;">Sitemap</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+  <script src="js/app.js"></script>
+
+ 
+  <script>
+    // ============================================
+    // DAILY DEALS CAROUSEL
+    // ============================================
+    const track = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotsContainer = document.getElementById('carouselDots');
+
+    const cards = Array.from(track.querySelectorAll('.deal-card'));
+    const totalCards = cards.length;
+
+    if (totalCards === 0) {
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+      dotsContainer.style.display = 'none';
+    } else {
+
+      let currentIndex = 0;
+
+      function getCardsPerView() {
+        if (window.innerWidth <= 600) return 1;
+        if (window.innerWidth <= 900) return 2;
+        if (window.innerWidth <= 1200) return 3;
+        return 4;
+      }
+
+      function getCardWidth() {
+        return cards[0].offsetWidth + 24;
+      }
+
+      function updateCarousel() {
+        const offset = currentIndex * getCardWidth();
+        track.style.transform = `translateX(-${offset}px)`;
+
+        const cpv = getCardsPerView();
+        const maxIndex = Math.max(0, totalCards - cpv);
+
+        prevBtn.classList.toggle('hidden', currentIndex === 0);
+        nextBtn.classList.remove('hidden');
+
+        const dots = dotsContainer.querySelectorAll('.carousel-dot');
+        const activeDot = Math.floor(currentIndex / cpv);
+        dots.forEach((d, i) => d.classList.toggle('active', i === activeDot));
+      }
+
+   function nextSlide() {
+  const cpv = getCardsPerView();
+  const maxIndex = Math.max(0, totalCards - cpv);
+  if (currentIndex >= maxIndex) {
+    currentIndex = 0;  // ← jump back to first
+  } else {
+    currentIndex++;
+  }
+  updateCarousel();
+}
+
+      function prevSlide() {
+        const cpv = getCardsPerView();
+        const maxIndex = Math.max(0, totalCards - cpv);
+        currentIndex = currentIndex <= 0 ? maxIndex : currentIndex - 1;
+        updateCarousel();
+      }
+
+      function buildDots() {
+        const cpv = getCardsPerView();
+        const dotCount = Math.ceil(totalCards / cpv);
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < dotCount; i++) {
+          const dot = document.createElement('button');
+          dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+          dot.addEventListener('click', () => {
+            currentIndex = i * cpv;
+            updateCarousel();
+          });
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+
+      let autoSlide = setInterval(nextSlide, 5000);
+      track.addEventListener('mouseenter', () => clearInterval(autoSlide));
+      track.addEventListener('mouseleave', () => { autoSlide = setInterval(nextSlide, 5000); });
+
+      window.addEventListener('resize', () => { buildDots(); updateCarousel(); });
+
+      buildDots();
+      updateCarousel();
+    }
+
+    // ============================================
+    // COUNTDOWN TIMER
+    // ============================================
+    function updateTimer() {
+      const now = new Date();
+      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+      const diff = endOfDay - now;
+      
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+    
+   updateTimer();
+    setInterval(updateTimer, 1000);
+  </script>
+  <script>
+  /* ── TRENDING MODAL DATA ── */
+  const trendingProducts = {
+    sony: {
+      id: 'sony-xperia-1-vii',
+      name: 'Sony Xperia 1 VII',
+      img: 'images/A(1)sony-xperia-1-vii-1.jpg',
+      newPrice: '₹89,999',
+      oldPrice: '₹1,09,999',
+      discount: '18% Off',
+      rating: '(4.5 / 5)',
+      stars: '★★★★★',
+      price: 89999,
+      desc: 'Sony Xperia 1 VII features a 6.5" 4K HDR OLED display, Snapdragon 8 Elite chipset, triple Zeiss camera system with 85mm telephoto lens, and 5000mAh battery with 65W fast charging. IP68 water resistant.'
+    },
+    xiaomi: {
+      id: 'xiaomi-17-max',
+      name: 'Xiaomi 17 Max',
+      img: 'images/A(4)xiaomi-17-max-1.jpg',
+      newPrice: '₹74,999',
+      oldPrice: '₹89,999',
+      discount: '17% Off',
+      rating: '(4.3 / 5)',
+      stars: '★★★★☆',
+      price: 74999,
+      desc: 'Xiaomi 17 Max sports a 6.82" AMOLED display at 144Hz, Snapdragon 8 Gen 4 processor, 200MP primary camera, and a massive 6000mAh battery with 120W HyperCharge.'
+    },
+    pixel: {
+      id: 'google-pixel-9a',
+      name: 'Google Pixel 9a',
+      img: 'images/A(2)google-pixel-9a-1.jpg',
+      newPrice: '₹49,999',
+      oldPrice: '₹59,999',
+      discount: '17% Off',
+      rating: '(4.4 / 5)',
+      stars: '★★★★☆',
+      price: 49999,
+      desc: 'Google Pixel 9a comes with the latest Google Tensor G4 chip, 6.1" OLED display, 48MP dual camera system with Google AI features, and 7 years of OS updates.'
+    },
+    oneplus: {
+      id: 'oneplus-ace-6-ultra',
+      name: 'OnePlus Ace 6 Ultra',
+      img: 'images/A(3)oneplus-ace-6-ultra-1.jpg',
+      newPrice: '₹64,999',
+      oldPrice: '₹79,999',
+      discount: '19% Off',
+      rating: '(4.6 / 5)',
+      stars: '★★★★★',
+      price: 64999,
+      desc: 'OnePlus Ace 6 Ultra packs a 6.78" ProXDR display, Snapdragon 8 Elite processor, 50MP Hasselblad triple camera, 6100mAh silicon-carbon battery with 100W SUPERVOOC charging.'
+    },
+   lenovo_yoga: {
+  id: 'lenovo-yoga-pro-7i',
+  name: 'Lenovo Yoga Pro 7i Gen 10',
+  img: 'images/A(3)D9CU8PT-1_T1776229880.avif',
+      newPrice: '₹1,06,600',
+      oldPrice: '₹1,24,999',
+      discount: '15% Off',
+      rating: '(4.6 / 5)',
+      stars: '★★★★★',
+      price: 106600,
+      category: 'Laptops',
+      desc: 'Lenovo Yoga Pro 7i Gen 10 features Intel Core Ultra 7, 14.5" 3K OLED display, 120Hz refresh rate, 71Whr battery, Dolby Atmos speakers, and Windows 11. Ultra-thin premium 2-in-1 design.'
+    },
+    hp_spectre: {
+      id: 'hp-spectre-x360',
+      name: 'HP Spectre x360 14 Touch',
+      img: 'images/1527733756066_yoga7i11ss_202511110512331776362914579.avif',
+      newPrice: '₹1,59,999',
+      oldPrice: '₹1,84,999',
+      discount: '14% Off',
+      rating: '(4.7 / 5)',
+      stars: '★★★★★',
+      price: 159999,
+      category: 'Laptops',
+      desc: 'HP Spectre x360 14 features Intel Core Ultra 7, 14" 2.8K OLED touchscreen, 360° hinge, 2MP IR camera, Thunderbolt 4, and up to 17 hours battery. Premium convertible laptop.'
+    },
+    macbook_pro: {
+      id: 'macbook-pro-m5',
+      name: 'Apple MacBook Pro M5',
+      img: 'images/(1)(3)mbp_14_16_028335cc2_2x.jpg',
+      newPrice: '₹1,69,900',
+      oldPrice: '₹1,99,900',
+      discount: '15% Off',
+      rating: '(4.9 / 5)',
+      stars: '★★★★★',
+      price: 169900,
+      category: 'Laptops',
+      desc: 'MacBook Pro with M5 chip delivers exceptional performance. Liquid Retina XDR display, up to 24 hours battery, 16GB unified memory, MagSafe 3 charging, HDMI and SD card slot.'
+    },
+    thinkpad: {
+      id: 'thinkpad-x1-carbon',
+      name: 'Lenovo ThinkPad X1 Carbon Gen 13',
+      img: 'images/13thinkpad-x1-carbon-gen-13-aura-edition-14-intel-arl.png',
+      newPrice: '₹1,89,990',
+      oldPrice: '₹2,19,999',
+      discount: '14% Off',
+      rating: '(4.8 / 5)',
+      stars: '★★★★★',
+      price: 189990,
+      category: 'Laptops',
+      desc: 'ThinkPad X1 Carbon Gen 13 with Intel Core Ultra 7, 14" 2.8K OLED display, military-grade durability (MIL-SPEC), 57Whr battery, fingerprint reader, and Windows 11 Pro.'
+    }
+  };
+
+  /* ── OPEN MODAL ── */
+  function openModal(productKey) {
+  const p = trendingProducts[productKey];
+  if (!p) return;
+
+  document.getElementById('modalImg').src = p.img;
+  document.getElementById('modalImg').alt = p.name;
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalNewPrice').textContent = p.newPrice;
+  document.getElementById('modalOldPrice').textContent = p.oldPrice;
+  document.getElementById('modalDiscount').textContent = p.discount;
+  document.getElementById('modalRating').textContent = p.rating;
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.querySelector('.modal-stars').textContent = p.stars;
+  document.getElementById('codCheckbox').checked = true;
+  document.getElementById('modalAddedMsg').classList.remove('show');
+  document.getElementById('modalCartBtn').textContent = '🛒 ADD TO CART';
+  document.getElementById('modalCartBtn').dataset.product = JSON.stringify(p);
+
+  /* ── FIX: update category dynamically ── */
+  const catEl = document.querySelector('.modal-cat');
+  if (p.category === 'Laptops') {
+    catEl.textContent = '💻 Laptops';
+  } else {
+    catEl.textContent = '📱 Smartphones';
+  }
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+  /* ── CLOSE MODAL ── */
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+function addFromModal() {
+  const p = JSON.parse(document.getElementById('modalCartBtn').dataset.product || '{}');
+  if (!p.id) return;
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const ex = cart.find(i => i._id === p.id);
+  if (ex) {
+    ex.quantity++;
+  } else {
+    cart.push({
+      _id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.img,
+      category: p.category || 'General',
+      quantity: 1
+    });
+  }
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  const total = cart.reduce((s, i) => s + i.quantity, 0);
+  document.querySelectorAll('.cart-count').forEach(el => {
+    el.textContent = total;
+    el.style.display = total > 0 ? 'flex' : 'none';
+  });
+
+  document.getElementById('modalAddedMsg').classList.add('show');
+  document.getElementById('modalCartBtn').textContent = '✓ ADDED!';
+  setTimeout(() => {
+    document.getElementById('modalAddedMsg').classList.remove('show');
+    document.getElementById('modalCartBtn').textContent = '🛒 ADD TO CART';
+  }, 2000);
+}
+
+  /* ── CLOSE ON ESC ── */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+  <script>
+    const slides = document.querySelectorAll('.hero-slide');
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 3000);
+    // Load trending laptops
+async function loadTrendingLaptops() {
+  try {
+    const res = await fetch('http://localhost:5000/api/products');
+    const products = await res.json();
+    const laptops = products.filter(p => p.category === 'Laptops').slice(0, 4);
+    const container = document.getElementById('trendingLaptops');
+    if (!container) return;
+    if (!laptops.length) { container.innerHTML = '<p style="color:var(--gray-400);">No laptops found</p>'; return; }
+    container.innerHTML = laptops.map(p => `
+      <div class="product-card" onclick="window.location.href='product.html?id=${p._id}'" style="cursor:pointer;">
+        <div style="height:220px; background:white; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+          <img src="${p.image}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain; padding:1rem;">
+        </div>
+        <div class="product-info">
+          <div class="product-category">${p.category}</div>
+          <h3 class="product-name">${p.name}</h3>
+          <div class="product-price">₹${p.price.toLocaleString('en-IN')}
+            ${p.originalPrice ? `<span class="original">₹${p.originalPrice.toLocaleString('en-IN')}</span>` : ''}
+          </div>
+          <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCartHome('${p._id}','${p.name}',${p.price},'${p.image}','${p.category}')">ADD TO CART</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    console.error('Failed to load laptops', e);
+  }
+}
+loadTrendingLaptops();
+    // Load trending laptops dynamically (optional — static cards above are already showing)
+  </script>
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-inner">
+      <div class="modal-img-wrap">
+        <img id="modalImg" src="" alt="Product" />
+      </div>
+      <div class="modal-details">
+        <div class="modal-cat">📱 Smartphones</div>
+        <h2 class="modal-name" id="modalName">Product Name</h2>
+        <div class="modal-rating">
+          <span class="modal-stars">★★★★☆</span>
+          <span class="modal-rating-count" id="modalRating">(4.2 / 5)</span>
+        </div>
+        <div class="modal-price-row">
+          <span class="modal-new-price" id="modalNewPrice">₹0</span>
+          <span class="modal-old-price" id="modalOldPrice">₹0</span>
+          <span class="modal-discount-badge" id="modalDiscount">0% Off</span>
+        </div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-divider"></div>
+        <div class="modal-cod-row">
+          <label class="cod-label">
+            <input type="checkbox" id="codCheckbox" checked />
+            <span class="cod-check-custom"></span>
+            <span class="cod-text">
+              <strong>Cash on Delivery available</strong>
+              <span>Pay when your order arrives</span>
+            </span>
+          </label>
+        </div>
+        <div class="modal-perks">
+          <span class="modal-perk">🚚 Free Delivery</span>
+          <span class="modal-perk">↺ 7-day Returns</span>
+          <span class="modal-perk">🔒 Secure Payment</span>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-cart-btn" id="modalCartBtn" onclick="addFromModal()">🛒 ADD TO CART</button>
+          <button class="modal-ok-btn" onclick="closeModal()">OK</button>
+        </div>
+        <div class="modal-added-msg" id="modalAddedMsg">✓ Added to cart!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+</html>

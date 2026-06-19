@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin — Add Product</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 3rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.5rem; margin-bottom: 2rem; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 1rem; }
+    input, select, textarea {
+      width: 100%; padding: 0.7rem;
+      border: 1.5px solid #ddd; font-size: 0.95rem;
+      font-family: inherit; box-sizing: border-box;
+    }
+    textarea { height: 80px; resize: vertical; }
+    button {
+      margin-top: 1.5rem; width: 100%; padding: 0.9rem;
+      background: #1a1a2e; color: white; border: none;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+    }
+    button:hover { background: #e94560; }
+    #msg { margin-top: 1rem; padding: 0.8rem; font-size: 0.9rem; display: none; }
+    .success { background: #e6f4ea; color: #34a853; }
+    .error { background: #fce8e8; color: #e94560; }
+    img#preview { max-width: 200px; margin-top: 0.5rem; display: none; border: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+
+  <h1>➕ Add New Product</h1>
+
+  <label>Product Name</label>
+  <input type="text" id="name" placeholder="e.g. Samsung Galaxy A37" />
+
+  <label>Description</label>
+  <textarea id="description" placeholder="e.g. 6.5-inch AMOLED, 50MP camera..."></textarea>
+
+  <label>Category</label>
+  <select id="category">
+    <option value="Phones">Phones</option>
+    <option value="Laptops">Laptops</option>
+    <option value="Audio">Audio</option>
+    <option value="Wearables">Wearables</option>
+    <option value="Gaming">Gaming</option>
+    <option value="Monitors">Monitors</option>
+    <option value="Accessories">Accessories</option>
+    <option value="Tablets">Tablets</option>
+  </select>
+
+  <label>Price (₹)</label>
+  <input type="number" id="price" placeholder="e.g. 24999" />
+
+  <label>Original Price (₹) — for strikethrough</label>
+  <input type="number" id="originalPrice" placeholder="e.g. 29999" />
+
+  <label>Image path (put file in public/images folder)</label>
+  <input type="text" id="image" placeholder="e.g. images/samsung-galaxy-a37-5.jpg" 
+         oninput="previewImg(this.value)" />
+  <img id="preview" />
+
+  <label>Stock</label>
+  <input type="number" id="stock" placeholder="e.g. 50" value="50" />
+
+  <button onclick="addProduct()">ADD PRODUCT</button>
+  <div id="msg"></div>
+
+  <script>
+    function previewImg(val) {
+      const img = document.getElementById('preview');
+      if (val) { img.src = val; img.style.display = 'block'; }
+      else { img.style.display = 'none'; }
+    }
+
+    async function addProduct() {
+      const name        = document.getElementById('name').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const category    = document.getElementById('category').value;
+      const price       = Number(document.getElementById('price').value);
+      const originalPrice = Number(document.getElementById('originalPrice').value);
+      const image       = document.getElementById('image').value.trim();
+      const stock       = Number(document.getElementById('stock').value);
+
+      if (!name || !description || !price || !image) {
+        showMsg('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:5000/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, description, price, originalPrice, image, category, stock })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMsg(`✅ "${name}" added successfully!`, 'success');
+          clearForm();
+        } else {
+          showMsg('❌ ' + data.message, 'error');
+        }
+      } catch (err) {
+        showMsg('❌ Server error — is your backend running?', 'error');
+      }
+    }
+
+    function showMsg(text, type) {
+      const el = document.getElementById('msg');
+      el.textContent = text;
+      el.className = type;
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 4000);
+    }
+
+    function clearForm() {
+      ['name','description','price','originalPrice','image','stock'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('preview').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

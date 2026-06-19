@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders | TECHSTORE</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .orders-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 5%;
+    }
+    .order-card {
+      border: 1px solid var(--gray-200);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .order-header {
+      background: var(--gray-100);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .order-id { font-weight: 700; color: var(--primary); font-size: 0.9rem; }
+    .order-date { font-size: 0.85rem; color: var(--gray-500); }
+    .order-status {
+      background: #34a853;
+      color: white;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 2px;
+    }
+    .order-total { font-weight: 700; color: var(--primary); }
+    .order-items { padding: 1rem 1.5rem; }
+    .order-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .order-item:last-child { border-bottom: none; }
+    .order-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      background: var(--gray-100);
+      padding: 0.3rem;
+    }
+    .order-item-name { font-weight: 600; font-size: 0.9rem; }
+    .order-item-qty { font-size: 0.82rem; color: var(--gray-500); }
+    .order-item-price { margin-left: auto; font-weight: 700; color: var(--primary); }
+    .empty-orders {
+      text-align: center;
+      padding: 4rem;
+      color: var(--gray-400);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">TECHSTORE</a>
+    <button class="mobile-menu-btn">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="orders.html" class="active">My Orders</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="nav-btn btn-primary auth-link-item">SIGN IN</a>
+      <div class="user-menu" style="display: none;">
+        <span class="user-greeting">Hi, <span class="user-name"></span></span>
+        <a href="#" class="logout-btn">Logout</a>
+      </div>
+      <a href="cart.html" class="cart-icon">🛒<span class="cart-count" style="display:none;">0</span></a>
+    </div>
+  </nav>
+
+  <div style="height: 70px;"></div>
+
+  <div class="orders-page">
+    <div class="section-header" style="text-align:left; margin-bottom:2rem;">
+      <div class="section-tag">Your Purchases</div>
+      <h2 class="section-title" style="text-align:left;">My Orders</h2>
+    </div>
+
+    <div id="ordersList"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>TECHSTORE</h3>
+        <p>Premium destination for cutting-edge electronics.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <ul><li><a href="products.html">All Products</a></li></ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul><li><a href="#">Contact</a></li></ul>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <ul><li><a href="#">About</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 TECHSTORE. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const container = document.getElementById('ordersList');
+
+    if (orders.length === 0) {
+      container.innerHTML = `
+        <div class="empty-orders">
+          <p style="font-size:3rem; margin-bottom:1rem;">📦</p>
+          <p style="font-size:1.2rem; margin-bottom:1.5rem;">No orders yet!</p>
+          <a href="products.html" class="nav-btn btn-primary">START SHOPPING</a>
+        </div>
+      `;
+    } else {
+      // Show newest first
+      const sorted = [...orders].reverse();
+container.innerHTML = sorted.map(order => `
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <div class="order-id">Order #${order.id}</div>
+              <div class="order-date">Placed on ${order.date}</div>
+            </div>
+            <span class="order-status">✓ ${order.status}</span>
+            <div class="order-total">₹${order.total.toLocaleString('en-IN')}</div>
+          </div>
+          <div style="padding: 1rem 1.5rem; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); font-size: 0.85rem; color: var(--gray-600);">
+            <strong>📦 Estimated Delivery:</strong> ${order.deliveryDate || 'Calculating...'}
+          </div>
+          ${order.address ? `
+          <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-100); font-size: 0.85rem; color: var(--gray-600);">
+            <strong>Delivery Address:</strong><br>
+            ${order.address.fullName} | ${order.address.phone}<br>
+            ${order.address.street}, ${order.address.city}, ${order.address.state} - ${order.address.pincode}
+          </div>
+          ` : ''}
+          <div class="order-items">
+            ${order.items.map(item => `
+              <div class="order-item">
+                <img src="${item.image || ''}" alt="${item.name}">
+                <div>
+                  <div class="order-item-name">${item.name}</div>
+                  <div class="order-item-qty">Qty: ${item.quantity}</div>
+                </div>
+                <div class="order-item-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+     
+        
+      `).join('');
+    }
+  </script>
+</body>
+</html>
