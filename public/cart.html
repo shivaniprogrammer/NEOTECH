@@ -263,58 +263,45 @@
     // ============================================
     // ADDRESS HANDLING
     // ============================================
-    async function loadSavedAddress() {
-      try {
-        const res = await fetch('https://neotech-gg5m.onrender.com/api/address');
-        const address = await res.json();
-        if (address) {
-          showSavedAddress(address);
-        } else {
-          showAddressForm();
-        }
-      } catch (err) {
-        showAddressForm();
-      }
-    }
+async function loadSavedAddress() {
+  const saved = JSON.parse(localStorage.getItem('deliveryAddress'));
+  if (saved) {
+    showSavedAddress(saved);
+  } else {
+    showAddressForm();
+  }
+}
 
-    function showSavedAddress(address) {
-      window.currentAddress = address;
-      document.getElementById('savedAddressText').innerHTML =
-        `<strong>${address.fullName}</strong> | ${address.phone}<br>${address.street}, ${address.city}, ${address.state} - ${address.pincode}`;
-      document.getElementById('savedAddressBox').style.display = 'block';
-      document.getElementById('addressForm').style.display = 'none';
-    }
+function showSavedAddress(address) {
+  window.currentAddress = address;
+  document.getElementById('savedAddressText').innerHTML =
+    `<strong>${address.fullName}</strong> | ${address.phone}<br>${address.street}, ${address.city}, ${address.state} - ${address.pincode}`;
+  document.getElementById('savedAddressBox').style.display = 'block';
+  document.getElementById('addressForm').style.display = 'none';
+}
 
-    function showAddressForm() {
-      document.getElementById('savedAddressBox').style.display = 'none';
-      document.getElementById('addressForm').style.display = 'flex';
-    }
+function showAddressForm() {
+  document.getElementById('savedAddressBox').style.display = 'none';
+  document.getElementById('addressForm').style.display = 'flex';
+}
 
-    async function saveAddress() {
-      const fullName = document.getElementById('addrName').value.trim();
-      const phone = document.getElementById('addrPhone').value.trim();
-      const street = document.getElementById('addrStreet').value.trim();
-      const city = document.getElementById('addrCity').value.trim();
-      const state = document.getElementById('addrState').value.trim();
-      const pincode = document.getElementById('addrPincode').value.trim();
+async function saveAddress() {
+  const fullName = document.getElementById('addrName').value.trim();
+  const phone = document.getElementById('addrPhone').value.trim();
+  const street = document.getElementById('addrStreet').value.trim();
+  const city = document.getElementById('addrCity').value.trim();
+  const state = document.getElementById('addrState').value.trim();
+  const pincode = document.getElementById('addrPincode').value.trim();
 
-      if (!fullName || !phone || !street || !city || !state || !pincode) {
-        alert('Please fill in all address fields.');
-        return;
-      }
+  if (!fullName || !phone || !street || !city || !state || !pincode) {
+    alert('Please fill in all address fields.');
+    return;
+  }
 
-      try {
-        const res = await fetch('https://neotech-gg5m.onrender.com/api/address', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ fullName, phone, street, city, state, pincode })
-        });
-        const data = await res.json();
-        showSavedAddress(data);
-      } catch (err) {
-        alert('Please fill address correctly.');
-      }
-    }
+  const address = { fullName, phone, street, city, state, pincode };
+  localStorage.setItem('deliveryAddress', JSON.stringify(address));
+  showSavedAddress(address);
+}
    
 
     // ============================================
