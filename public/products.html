@@ -614,7 +614,7 @@ let priceMaxVal = 0;
     /* LOAD PRODUCTS */
     async function loadProducts() {
       try {
-        const res = await fetch('http://localhosthttps://neotech-gg5m.onrender.com:5000/api/products');
+        const res = await fetch('https://neotech-gg5m.onrender.com/api/products');
         allProducts = await res.json();
         displayProducts(allProducts);
       } catch {
