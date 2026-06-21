@@ -337,10 +337,7 @@
         return;
       }
 
-      if (!window.currentAddress) {
-        alert('Please add a delivery address.');
-        return;
-      }
+     
 
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
       const orders = JSON.parse(localStorage.getItem('orders')) || [];
