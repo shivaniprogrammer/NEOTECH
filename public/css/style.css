@@ -180,7 +180,7 @@ body {
 
 .btn-outline {
   background: white;
-  color: white;
+  color: black;
   border: 2px solid var(--gray-300);
 }
 
