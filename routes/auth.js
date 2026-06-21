@@ -1,14 +1,9 @@
-const express = require('express');
-const router = express.Router();
+
 const jwt = require('jsonwebtoken');
 const passport = require('../config/passport');
-const { register, login, getProfile } = require('../controllers/authController');
-const  protect = require('../middleware/authMiddleware');
 
-// Existing routes
-router.post('/register', register);
-router.post('/login', login);
-router.get('/profile', protect, getProfile);
+
+
 
 // Google OAuth routes
 router.get('/google',
@@ -34,4 +29,3 @@ router.get('/google/callback',
     res.redirect(`${process.env.FRONTEND_URL}/login.html?token=${token}&user=${encodeURIComponent(JSON.stringify(userData))}`);
   }
 );
-module.exports = router;
