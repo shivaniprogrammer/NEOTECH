@@ -355,6 +355,15 @@ const products = [
     image: 'images/117n218es3vnes50ev2pgk82xncokqr4083966.avif',
     stock: 25
   },
+  {
+  name: 'Lenovo Yoga Pro 7i Gen 10 Aura Edition',
+  description: '14.5-inch OLED 120Hz, Intel Core Ultra 7 255H, 32GB RAM, 1TB SSD, Windows 11, Intel Arc 140T, Luna Grey',
+  price: 106600,
+  originalPrice: 124999,
+  image: 'images/12yoga-pro-7i-gen-10-aura-edition-14-intel.6814d92792b00e5d.png',
+  category: 'Laptops',
+  stock: 12
+},
  
   {
     name: 'Apple MacBook Neo',
