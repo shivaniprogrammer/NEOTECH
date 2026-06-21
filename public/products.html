@@ -795,8 +795,8 @@ if (savedTab) {
 
 async function loadProducts() {
   try {
-    const res = await fetch('http://lhttps://neotech-gg5m.onrender.comocalhost:5000/api/products');
-    allProducts = await res.json();
+    
+  const res = await fetch('https://neotech-gg5m.onrender.com/api/products');allProducts = await res.json();
     updatePriceSliderBounds();
     displayProducts(allProducts);
   } catch {
