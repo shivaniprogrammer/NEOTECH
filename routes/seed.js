@@ -355,15 +355,7 @@ const products = [
     image: 'images/117n218es3vnes50ev2pgk82xncokqr4083966.avif',
     stock: 25
   },
-  {
-    name: 'Lenovo Yoga 7i 2-in-1',
-    description: '14-inch 2.8K OLED touch, Intel Core Ultra 5, 16GB RAM, 512GB SSD, Windows 11, convertible 2-in-1',
-    price: 89990,
-    originalPrice: 104999,
-    category: 'Laptops',
-    image: 'images/1527733756066_yoga7i11ss_202511110512331776362914579.avif',
-    stock: 18
-  },
+ 
   {
     name: 'Apple MacBook Neo',
     description: '13.6-inch Liquid Retina, Apple A18 Pro chip, 8GB Unified Memory, 256GB SSD, macOS, Touch ID, Midnight',
