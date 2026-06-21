@@ -252,6 +252,11 @@
     // CHECKOUT FLOW
     // ============================================
     document.querySelector('.checkout-btn').addEventListener('click', async () => {
+      if (!window.currentAddress) {
+        alert('Please add a delivery address.');
+        return;
+      }
+
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
       if (cart.length === 0) { alert('Your cart is empty!'); return; }
       document.getElementById('paymentSection').style.display = 'block';
@@ -265,7 +270,7 @@
     // ============================================
     async function loadSavedAddress() {
       try {
-        const res = await fetch('http://locahttps://neotech-gg5m.onrender.comlhost:5000/api/address');
+        const res = await fetch('https://neotech-gg5m.onrender.com/api/address');
         const address = await res.json();
         if (address) {
           showSavedAddress(address);
@@ -304,17 +309,18 @@
       }
 
       try {
-        const res = await fetch('http://localhoshttps://neotech-gg5m.onrender.comt:5000/api/address', {
+        const res = await fetch('https://neotech-gg5m.onrender.com/api/address', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fullName, phone, street, city, state, pincode })
+         body: JSON.stringify({ fullName, phone, street, city, state, pincode })
         });
         const data = await res.json();
-        showSavedAddress(data.address);
+        showSavedAddress(data);
       } catch (err) {
-        alert('Failed to save address. Is your server running?');
+        alert('Please fill address correctly.');
       }
     }
+   
 
     // ============================================
     // ENABLE PLACE ORDER WHEN COD SELECTED
