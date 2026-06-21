@@ -251,19 +251,14 @@
     // ============================================
     // CHECKOUT FLOW
     // ============================================
-    document.querySelector('.checkout-btn').addEventListener('click', async () => {
-      if (!window.currentAddress) {
-        alert('Please add a delivery address.');
-        return;
-      }
-
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      if (cart.length === 0) { alert('Your cart is empty!'); return; }
-      document.getElementById('paymentSection').style.display = 'block';
-      document.querySelector('.checkout-btn').style.display = 'none';
-      document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
-      await loadSavedAddress();
-    });
+  document.querySelector('.checkout-btn').addEventListener('click', async () => {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  if (cart.length === 0) { alert('Your cart is empty!'); return; }
+  document.getElementById('paymentSection').style.display = 'block';
+  document.querySelector('.checkout-btn').style.display = 'none';
+  document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
+  await loadSavedAddress();
+});
 
     // ============================================
     // ADDRESS HANDLING
