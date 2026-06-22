@@ -310,15 +310,7 @@ const products = [
     image: 'images/A(6)hp-omnibook-7-aero-13.3-inch-laptop-next-gen-ai-pc-conrardr-glacier-silver-front_1.avif',
     stock: 15
   },
-  {
-    name: 'Lenovo Yoga Pro 7i Gen 10 Aura Edition',
-    description: '14.5-inch OLED 120Hz, Intel Core Ultra 7 255H, 32GB RAM, 1TB SSD, Windows 11, Intel Arc 140T, Luna Grey',
-    price: 106600,
-    originalPrice: 124999,
-    category: 'Laptops',
-    image: 'images/12yoga-pro-7i-gen-10-aura-edition-14-intel.6814d92792b00e5d.png',
-    stock: 12
-  },
+
   {
     name: 'Lenovo ThinkPad X1 Carbon Gen 13 Aura Edition',
     description: '14-inch 2.8K OLED 120Hz, Intel Core Ultra 7 258V, 32GB RAM, 1TB SSD, Windows 11 Pro, Wi-Fi 7, Eclipse Black',
@@ -360,7 +352,7 @@ const products = [
   description: '14.5-inch OLED 120Hz, Intel Core Ultra 7 255H, 32GB RAM, 1TB SSD, Windows 11, Intel Arc 140T, Luna Grey',
   price: 106600,
   originalPrice: 124999,
-  image: 'images/12yoga-pro-7i-gen-10-aura-edition-14-intel.6814d92792b00e5d.png',
+  image: 'images/1527733756066_yoga7i11ss_202511110512331776362914579.avif',
   category: 'Laptops',
   stock: 12
 },
