@@ -384,7 +384,7 @@
       const id = new URLSearchParams(window.location.search).get('id');
       if (!id) { window.location.href = 'index.html'; return; }
       try {
-       const res = await fetch(`httphttps://neotech-gg5m.onrender.com://localhost:5000/api/products/${id}`);
+       const res = await fetch(`https://neotech-gg5m.onrender.com/api/products/${id}`);
         currentProduct = await res.json();
         renderProduct(currentProduct);
       } catch {
