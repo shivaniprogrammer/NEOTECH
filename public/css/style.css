@@ -44,7 +44,43 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
+.login-visual-footer {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 2rem;
+}
 
+.brands-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1rem;
+}
+
+.brands-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.brand-badge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  letter-spacing: 0.5px;
+  background: rgba(255,255,255,0.05);
+  transition: all 0.2s;
+}
+
+.brand-badge:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
 /* ============================================
    NAVIGATION - FIXED
    ============================================ */
